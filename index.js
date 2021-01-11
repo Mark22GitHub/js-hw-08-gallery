@@ -6,7 +6,7 @@ const image = document.querySelector('.lightbox__image');
 const buttonX = document.querySelector("[data-action=close-lightbox]");
 const overlay = document.querySelector(".lightbox__overlay");
 
-galleryItems.map((item) => {
+galleryItems.map((item , index) => {
     const li = document.createElement('li');
     li.classList.add('gallery__item');
 
@@ -18,7 +18,8 @@ galleryItems.map((item) => {
     img.classList.add('gallery__image');
     img.setAttribute('src' , item.preview);
     img.setAttribute('data-source', item.original);
-    img.setAttribute('alt' , item.description);
+    img.setAttribute('alt', item.description);
+    img.setAttribute('data-index', index);
 
 
     ul.append(li);
@@ -35,6 +36,7 @@ ul.addEventListener('click', (event) => {
     const imageURL = imageRef.dataset.source;
     div.classList.add('is-open');
     image.src = imageURL;
+    image.dataset.index = event.target.dataset.index;
 
 });
 
@@ -59,11 +61,34 @@ if (event.code === 'Escape') {
     }
 });
 
+function newSrc(step, index) {
+    image.dataset.index = step + index;
+    image.src = galleryItems[step + index].original;
+}
 
+function arrowLeft() {
+    const index = Number(image.dataset.index);
+  if (index === 0) {
+      newSrc(0, galleryItems.length - 1);
+      return;
+  }
+    newSrc(-1, index);
+}
 
+function arrowRight() {
+    const index = Number(image.dataset.index);
+  if (index === galleryItems.length - 1) {
+      newSrc(0, 0);
+      return;
+  }
+    newSrc(1, index);
+}
 
-
-
- 
- 
-
+window.addEventListener('keydown', (event) => {
+if (event.key === 'ArrowLeft') {
+    arrowLeft();
+}
+else if (event.key === 'ArrowRight') {
+    arrowRight();
+  }
+});
