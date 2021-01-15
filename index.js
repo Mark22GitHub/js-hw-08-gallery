@@ -27,8 +27,11 @@ galleryItems.map((item , index) => {
     a.append(img);
 })
 
-ul.addEventListener('click', (event) => {
-     event.preventDefault();
+ul.addEventListener('click', open);
+
+
+function open(event) {
+ event.preventDefault();
     if (event.target.nodeName !== 'IMG') {
         return;
     }
@@ -37,8 +40,8 @@ ul.addEventListener('click', (event) => {
     div.classList.add('is-open');
     image.src = imageURL;
     image.dataset.index = event.target.dataset.index;
+}
 
-});
 
 function close() {
     div.classList.remove('is-open');
